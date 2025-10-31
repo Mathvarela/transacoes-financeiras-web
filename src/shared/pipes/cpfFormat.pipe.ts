@@ -10,7 +10,7 @@ export class CpfFormatPipe implements PipeTransform {
 
     const digits = value.toString().replace(/\D/g, '');
 
-    if (digits.length !== 11) return value.toString(); // Retorna sem formatação se não tiver 11 dígitos
+    if (digits.length !== 11) return value.toString();
 
     return digits.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   }
