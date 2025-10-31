@@ -1,26 +1,34 @@
-# TransacoesFinanceirasWeb
+# Visão Geral do Projeto
 
-O projeto foi gerado com o [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
+Este é um aplicativo web para gerenciar transações financeiras. É um aplicativo CRUD (Criar, Ler, Atualizar, Excluir) simples, construído com Angular para o frontend e um backend .NET 8 para renderização no lado do servidor. O aplicativo utiliza Angular Material para os componentes da interface do usuário.
 
-## Versão do Node instalado
-Versão utilizada `20.19.5`
+## Tecnologias Chave
 
-## Versão do NPM instalado
-Versão utilizada `10.8.2`
+*   **Frontend:** Angular, TypeScript, Angular Material
+*   **Backend:** .NET 8
+*   **Gerenciador de Pacotes:** npm
 
-## Pacotes Utilizados
-* Angular Material com a versão `18.2.14`
+# Construção e Execução
 
-Foram usados diversos modulos do Angular Material, como `MatIconModule`,`MatDatepickerModule`,``MatNativeDateModule``,``MatDialogModule``,``MatPaginatorModule``,``MatSortModule``,``MatTableModule``, `MatFormFieldModule`,`MatInputModule`,`MatSelectModule`,`MatButtonModule` entre outros.
+*   **Instalar dependências:** `npm install`
+*   **Executar o aplicativo:** `npm run start`
+    *   Isso iniciará um servidor de desenvolvimento em `http://localhost:4200/`.
 
-## O projeto
-Projeto foi desenvolvido de forma simples, CRUD para gerenciamento de transações financeiras, porem tentando utilizar um pouco de cada component do angular. Foi utilizado a parte de Formularios reativos, Validações customizadas como a de CPF através do validators. O projeto possui a um pouco de PipeTransform para os campos em que é necessarios a transformação das informações para o usuário final, como a conversão da data para o formato PT-BR, valores monetarios e até mesmo a formatação do CPF. Foi iniciado a ideia de componentes reutilizaveis, pelo componente de mensagem de sucesso e erro. Falta melhorar, adicionando ele em um componente "Base" e que os componentes de negócio caso queiram utilizar, façam o `extends` e com isso utilize de forma mais limpa a utilização da chamada. O projeto está um pouco responsivo, ainda ha melhorar. A parte de models, temos apenas duas interfaces, `tipoTransacao.ts` e `transacoes.ts` e na parte do `services` temos apenas um `transacoes.services.ts`.
+# Convenções de Desenvolvimento
 
-## Para executar o projeto
+## Estrutura do Projeto
 
-* Acesse a raiz do projeto e execute `npm run start`.
-* Navegue para `http://localhost:4200/`;
+*   `src/`: Contém o código-fonte principal do aplicativo.
+*   `src/app/`: Contém os componentes, rotas e módulos do aplicativo Angular.
+*   `src/components/`: Contém os componentes do aplicativo, organizados por funcionalidade.
+*   `src/models/`: Contém os modelos de dados para o aplicativo.
+*   `src/services/`: Contém os serviços para interagir com o backend.
+*   `src/shared/`: Contém componentes compartilhados, enums, pipes e validadores.
 
+## Estilo de Codificação
 
-
-
+*   O projeto usa TypeScript tanto para o frontend quanto para o backend.
+*   O projeto usa SCSS para estilização.
+*   O projeto segue a estrutura padrão de projetos Angular.
+*   Pipes personalizados são usados para formatar dados (por exemplo, datas, CPF).
+*   Validadores personalizados são usados para validação de formulários (por exemplo, validação de CPF).
