@@ -1,0 +1,144 @@
+<div class="container">
+    <form [formGroup]="transacaoForm" (ngSubmit)="pesquisar()" class="form-container"
+        aria-label="Formulário de pesquisa de transações">
+        <div class="row">
+            <div class="col-md-4 col-lg-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>CPF</mat-label>
+                    <input matInput formControlName="cpf" placeholder="Digite o CPF" maxlength="11"
+                        inputmode="numeric" />
+                    <button *ngIf="transacaoForm.get('cpf')?.value" mat-icon-button matSuffix
+                        (click)="transacaoForm.get('cpf')?.setValue('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    @if (transacaoForm.get('cpf')?.hasError('cpfInvalido') && transacaoForm.get('cpf')?.value) {
+                    <mat-error>
+                        CPF inválido
+                    </mat-error>
+                    }
+
+                </mat-form-field>
+            </div>
+            <div class="col-md-4 col-lg-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Data Inicio</mat-label>
+                    <input matInput [matDatepicker]="pickerInicio" formControlName="dataInicio">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerInicio></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4 col-lg-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Data Fim</mat-label>
+                    <input matInput [matDatepicker]="pickerFim" formControlName="dataFim">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerFim"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFim></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tipo de Transação</mat-label>
+                    <mat-select formControlName="tipoTransacao">
+                        <mat-option *ngFor="let tipo of tiposTransacao" [value]="tipo.id">{{ tipo.descricao
+                            }}</mat-option>
+                    </mat-select>
+                    <button *ngIf="transacaoForm.get('tipoTransacao')?.value" mat-icon-button matSuffix
+                        (click)="transacaoForm.get('tipoTransacao')?.setValue('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6 col-lg-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Cancelado</mat-label>
+                    <mat-select formControlName="cancelado">
+                        <mat-option *ngFor="let opcao of opcoesCancelamento" [value]="opcao.id">{{ opcao.valor
+                            }}</mat-option>
+                    </mat-select>
+                    @if (transacaoForm.get('cancelado')?.value == 1 || transacaoForm.get('cancelado')?.value == 0) {
+                    <button mat-icon-button matSuffix (click)="transacaoForm.get('cancelado')?.setValue('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    }
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-lg-2 col-sm-12" style="margin-left: auto;">
+                <button style="width: 100%;" mat-raised-button color="primary" type="submit">Pesquisar</button>
+            </div>
+        </div>
+
+    </form>
+    <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let item">#{{ item.id }}</td>
+            </ng-container>
+            <ng-container matColumnDef="creditos">
+                <td mat-footer-cell *matFooterCellDef colspan="7"> Total Creditos: {{getTotalCreditos() |
+                    currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="debitos">
+                <td mat-footer-cell *matFooterCellDef colspan="7"> Total Débitos: {{getTotalDebitos() |
+                    currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="totalGeral">
+                <td mat-footer-cell *matFooterCellDef colspan="7"> Total Creditos - Débitos: {{getTotalGeral() |
+                    currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="cpf">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>CPF</th>
+                <td mat-cell *matCellDef="let item">{{ item.cpf | cpfFormat }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="valor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Valor</th>
+                <td mat-cell *matCellDef="let item">{{ item.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="tipoTransacao">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+                <td mat-cell *matCellDef="let item">{{ item.tipoTransacao | tipoTransacaoFormat }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="data">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Data</th>
+                <td mat-cell *matCellDef="let item">{{ item.data | dateFormat }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="cancelada">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Cancelado</th>
+                <td mat-cell *matCellDef="let item">{{ item.cancelada | booleanToText }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="acoes">
+                <th mat-header-cell *matHeaderCellDef>Ações</th>
+                <td mat-cell *matCellDef="let item">
+                    <button mat-icon-button color="primary" (click)="editarTransacao(item.id)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="acionarConfirmacaoDeletarTransacao(item)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="['creditos']"></tr>
+            <tr mat-footer-row *matFooterRowDef="['debitos']"></tr>
+            <tr mat-footer-row *matFooterRowDef="['totalGeral']"></tr>
+        </table>
+        <mat-paginator class="mat-elevation-z8" [length]="totalItems" [pageSize]="pageSize"
+            [pageSizeOptions]="[1,5, 10]" (page)="mudarPagina($event)" showFirstLastButtons>
+        </mat-paginator>
+    </div>
+</div>

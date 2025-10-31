@@ -1,0 +1,68 @@
+<form [formGroup]="transacaoForm" (ngSubmit)="onSubmit()" class="form-container">
+    <div class="row">
+        <div class="col-md-4 col-lg-4 col-sm-12 col-6">
+            <mat-form-field appearance="outline">
+                <mat-label>CPF</mat-label>
+                <input matInput formControlName="cpf" [maxlength]="11" placeholder="Digite o CPF" />
+                <mat-error *ngIf="transacaoForm.get('cpf')?.hasError('required')">
+                    CPF obrigatório
+                </mat-error>
+                <mat-error *ngIf="transacaoForm.get('cpf')?.hasError('cpfInvalido')">
+                    CPF inválido
+                </mat-error>
+
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-4 col-lg-4 col-sm-12 col-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Valor</mat-label>
+                <input matInput formControlName="valor" placeholder="Digite o valor" />
+                <mat-error *ngIf="transacaoForm.get('valor')?.invalid">Valor obrigatório e maior que zero</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-4 col-lg-4 col-sm-12 col-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Data da Transação</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="data">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="transacaoForm.get('data')?.hasError('required')">
+                    Data obrigatório
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-12 col-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo de Transação</mat-label>
+                <mat-select formControlName="tipoTransacao">
+                    <mat-option *ngFor="let tipo of tiposTransacao" [value]="tipo.id">{{ tipo.descricao }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="transacaoForm.get('tipoTransacao')?.hasError('required')">
+                    Tipo de Transação obrigatório
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-4 col-lg-4 col-sm-12 col-12" style="align-content: center;">
+            <mat-checkbox formControlName="cancelada">Cancelada</mat-checkbox>
+        </div>
+
+    </div>
+
+    <div class="row" style="justify-content: end;">
+        <div class="col-md-4 col-lg-2 col-sm-12 col-12">
+            <button mat-raised-button color="primary" (click)="redirectTo('/listar-transacoes')" type="reset"
+                class="btn-cancelar " style="width: 100%;"> Cancelar
+            </button>
+        </div>
+        <div class="col-md-4 col-lg-2 col-sm-12 col-12">
+            <button mat-raised-button color="primary" type="submit" style="width: 100%;"
+                [disabled]="transacaoForm.invalid">
+                Editar Transação
+            </button>
+        </div>
+    </div>
+
+</form>
